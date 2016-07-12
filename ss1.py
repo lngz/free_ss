@@ -60,7 +60,7 @@ child2 = subprocess.Popen(args)
 
 while 1:
 	print "."
-	time.sleep (300)
+	time.sleep (1800)
 
 	sites, ports, password1, method = get_free_ss()
 	print sites
