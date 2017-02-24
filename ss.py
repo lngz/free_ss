@@ -46,7 +46,14 @@ sites, ports, password = get_free_ss()
 i = int(sys.argv[1])
 # print "shadowsocks/shadowsocks/local.py -s " + sites + " -p " + ports + " -k " + password
 # os.system("shadowsocks/shadowsocks/local.py -s " + sites + " -p " + ports + " -k " + password)
-args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , "-p" , ports , "-k" , password ]
+
+if len(sys.argv) == 2:
+	localbind = '1080'
+else:
+	localbind = sys.argv[2]
+
+
+args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , "-p" , ports , "-k" , password ,"-l", localbind]
 print args
 child2 = subprocess.Popen(args)
 # out = child2.communicate()
@@ -68,7 +75,7 @@ while 1:
 	else:
 		child2.kill();
 		password = password1
-		args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , "-p" , ports , "-k" , password , "-m" , method]
+		args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , "-p" , ports , "-k" , password , "-l", localbind]
 		print args
 		child2 = subprocess.Popen(args)
 
