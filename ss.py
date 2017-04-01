@@ -72,7 +72,7 @@ child2 = subprocess.Popen(args)
 
 while 1:
 	print "."
-	time.sleep (1800)
+	time.sleep (3600)
 
 	sites, ports, password1 ,method= get_free_ss()
 	print sites
@@ -85,7 +85,12 @@ while 1:
 	else:
 		child2.kill();
 		password = password1
-		args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , "-p" , ports , "-k" , password , "-l", localbind]
+		args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , 
+                                            "-p" , ports , 
+                                            "-k" , password ,
+                                            "-m" , method,
+                                            "-l", localbind]
+
 		print args
 		child2 = subprocess.Popen(args)
 
