@@ -9,7 +9,7 @@ import subprocess
 import time
 
 def get_free_ss() :
-	url="http://abc.ishadow.online/"
+	url="http://www.ishadowsocks.com/"
 
 	up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
@@ -44,6 +44,7 @@ def get_free_ss() :
 	print sites
 	print ports
 	print password
+	print method
 
 	return sites[i],ports[i], password[i],method[i]
 
