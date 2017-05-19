@@ -9,7 +9,7 @@ import subprocess
 import time
 
 def get_free_ss() :
-	url="http://www.ishadowsocks.net/"
+	url="http://ss.ishadowx.com/"
 
 	up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
