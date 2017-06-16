@@ -76,7 +76,7 @@ while 1:
  
     time.sleep (2)
 
-    ret = os.system('curl --connect-timeout 10 --socks5-host 127.0.0.1:1080 www.youtube.com')
+    ret = os.system('curl --connect-timeout 10 --socks5-host 127.0.0.1:1080 www.google.com')
 
     if ret == 0:
         time.sleep (1800)
