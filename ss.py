@@ -8,6 +8,7 @@ import sys
 import subprocess
 import time
 import random
+import base64
 
 def get_free_ss() :
     url="http://ss.ishadowx.com/"
@@ -21,6 +22,7 @@ def get_free_ss() :
     ports = []
     password = []
     method = []
+    qr = []
     for line in lines :
 
         
@@ -41,15 +43,48 @@ def get_free_ss() :
         if m:
             # print m.group(1)
             method.append(m.group(1))
+        m = re.match('.*<h4><a href="(img/qr/.*\.png)"(.*)</h4>', line)
+        if m:
+            # print m.group(1)
+            qr.append(m.group(1))
     
     print sites
     print ports
     print password
     print method
+    print qr
     
     i = random.randint(0,len(sites)-1)
-    return sites[i],ports[i], password[i],method[i]
+    if not password[i] == '':
+        return sites[i],ports[i], password[i],method[i]
+    else:
+    	try:
+    		qr_code = subprocess.check_output(['zbarimg', '-q', url+qr[i]])
+    	except Exception as e:
+    		return sites[i],ports[i], password[i],method[i]
+        
+        # print qr_code
+        return get_free_qr(qr_code)
 
+def get_free_qr(qr) :
+	#QR-Code:ss://cmM0LW1kNToxMTgwOTE1MkAxNTMuOTIuNDMuNjQ6NDQzCg==
+
+	SS = qr
+	ss = base64.b64decode(SS.split('/')[2])
+	method = ss.split(':')[0]
+	ports = ss.split(':')[2].strip()
+	password = ss.split(':')[1].split('@')[0]
+	sites = ss.split(':')[1].split('@')[1]
+
+	print sites
+	print ports
+	print password
+
+
+	
+	return sites,ports, password,method
+
+# sites, ports, password, method = get_free_qr()
 sites, ports, password ,method= get_free_ss()
 
 
@@ -63,7 +98,7 @@ localbind = '1080'
 args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
-                                            "-m" , method,
+                                            "-m" , method,"-v",
                                             "-l", localbind]
 print args
 child2 = subprocess.Popen(args)
@@ -91,7 +126,7 @@ while 1:
         args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
-                                            "-m" , method,
+                                            "-m" , method,"-v",
                                             "-l", localbind]
 
         print args
