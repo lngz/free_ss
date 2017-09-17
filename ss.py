@@ -11,7 +11,7 @@ import random
 import base64
 
 def get_free_ss() :
-    url="http://ss.ishadowx.com/"
+    url="https://ss.ishadowx.net/"
 
     up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
