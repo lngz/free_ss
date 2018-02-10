@@ -11,10 +11,10 @@ import random
 import base64
 
 def get_free_ss() :
-	#http://isx.tn/
-	#http://isx.yt/
+    #http://isx.tn/
+    url="http://isx.yt/"
 
-    url="https://global.ishadowx.net/"
+    #url="https://global.ishadowx.net/"
 
     up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
