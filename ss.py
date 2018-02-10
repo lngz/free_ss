@@ -11,7 +11,10 @@ import random
 import base64
 
 def get_free_ss() :
-    url="https://ss.ishadowx.net/"
+	#http://isx.tn/
+	#http://isx.yt/
+
+    url="https://global.ishadowx.net/"
 
     up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
@@ -35,7 +38,7 @@ def get_free_ss() :
         if m:
             # print m.group(1)
             ports.append(m.group(1))
-        m = re.match('.*<h4>Password:<span id=".*?">(.*?)', line)
+        m = re.match('.*<h4>Password:<span id=".*?">(.*)', line)
         if m:
             # print m.group(1)
             password.append(m.group(1))
@@ -95,7 +98,7 @@ sites, ports, password ,method= get_free_ss()
 localbind = '1080'
 
 
-args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , 
+args = ["../shadowsocks/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
@@ -123,7 +126,7 @@ while 1:
         print ports
         print password1
         password = password1
-        args = ["shadowsocks/shadowsocks/local.py", "-s" , sites , 
+        args = ["../shadowsocks/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
