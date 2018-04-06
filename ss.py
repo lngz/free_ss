@@ -12,11 +12,13 @@ import base64
 
 def get_free_ss() :
     #http://isx.tn/
-    url="http://isx.yt/"
+    #url="http://isx.yt/"
 
-    #url="https://global.ishadowx.net/"
-
-    up=urllib2.urlopen(url)#打开目标页面，存入变量up
+    url="https://get.ishadowx.net/"
+    opener = urllib2.build_opener()
+    opener.addheaders = [('User-Agent', 'Mozilla/5.0')]
+    up = opener.open(url)
+    #up=urllib2.urlopen(url)#打开目标页面，存入变量up
 
     lines =up.readlines()#从up中读入该HTML文件
 
