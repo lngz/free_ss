@@ -60,16 +60,24 @@ def get_free_ss() :
     print qr
     
     i = random.randint(0,len(sites)-1)
-    if not password[i] == '':
-        return sites[i],ports[i], password[i],method[i]
-    else:
-    	try:
-    		qr_code = subprocess.check_output(['zbarimg', '-q', url+qr[i]])
-    	except Exception as e:
-    		return sites[i],ports[i], password[i],method[i]
+    print i
+    # if not password[i] == '':
+    if i < 9:
+        protocal = 'origin'
+        obfs = 'plain'
+    else: 
+        protocal = 'auth_sha1_v4'
+        obfs = 'tls1.2_ticket_auth'
+
+    return sites[i],ports[i], password[i],method[i],protocal, obfs
+    # else:
+    # 	try:
+    # 		qr_code = subprocess.check_output(['zbarimg', '-q', url+qr[i]])
+    # 	except Exception as e:
+    # 		return sites[i],ports[i], password[i],method[i]
         
-        # print qr_code
-        return get_free_qr(qr_code)
+    #     # print qr_code
+    #     return get_free_qr(qr_code)
 
 def get_free_qr(qr) :
 	#QR-Code:ss://cmM0LW1kNToxMTgwOTE1MkAxNTMuOTIuNDMuNjQ6NDQzCg==
@@ -90,7 +98,7 @@ def get_free_qr(qr) :
 	return sites,ports, password,method
 
 # sites, ports, password, method = get_free_qr()
-sites, ports, password ,method= get_free_ss()
+sites, ports, password ,method, protocal,obfs= get_free_ss()
 
 
 # print "shadowsocks/shadowsocks/local.py -s " + sites + " -p " + ports + " -k " + password
@@ -100,11 +108,13 @@ sites, ports, password ,method= get_free_ss()
 localbind = '1080'
 
 
-args = ["../shadowsocks/shadowsocks/local.py", "-s" , sites , 
+args = ["../shadowsocksr/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
-                                            "-l", localbind]
+                                            "-l", localbind,
+                                            "-O", protocal,
+                                            "-o", obfs]
 print args
 child2 = subprocess.Popen(args)
 # out = child2.communicate()
@@ -123,16 +133,18 @@ while 1:
         continue
     else:
         child2.kill();
-        sites, ports, password1 ,method= get_free_ss()
+        sites, ports, password1 ,method , protocal,obfs= get_free_ss()
         print sites
         print ports
         print password1
         password = password1
-        args = ["../shadowsocks/shadowsocks/local.py", "-s" , sites , 
+        args = ["../shadowsocksr/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
-                                            "-l", localbind]
+                                            "-l", localbind,
+                                            "-O", protocal,
+                                            "-o", obfs]
 
         print args
         child2 = subprocess.Popen(args)
