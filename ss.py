@@ -14,7 +14,7 @@ def get_free_ss() :
     #http://isx.tn/
     #url="http://isx.yt/"
 
-    url="https://get.ishadowx.net/"
+    url="https://my.ishadowx.net/"
     opener = urllib2.build_opener()
     opener.addheaders = [('User-Agent', 'Mozilla/5.0')]
     up = opener.open(url)
