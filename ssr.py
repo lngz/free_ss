@@ -36,7 +36,7 @@ def get_free_ss() :
             print line
             print m.group(1)
             sites.append(m.group(1))
-        m = re.match('.*<h4>Port:<span id=".*?">(\d+)', line)
+        m = re.match('.*<h4>Port:<span id=".*?">(\d*)', line)
         if m:
             # print m.group(1)
             ports.append(m.group(1))
