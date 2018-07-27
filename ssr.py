@@ -11,14 +11,23 @@ import random
 import base64
 
 def get_free_ss() :
-    #http://isx.tn/
-    #url="http://isx.yt/"
-
     url="https://my.ishadowx.net/"
-    opener = urllib2.build_opener()
-    opener.addheaders = [('User-Agent', 'Mozilla/5.0')]
-    up = opener.open(url)
-    #up=urllib2.urlopen(url)#打开目标页面，存入变量up
+    data = {
+
+      'Connection':' keep-alive' ,
+      'Pragma':' no-cache' ,
+      'Cache-Control':' no-cache' ,
+      'Upgrade-Insecure-Requests':' 1' ,
+      'User-Agent':' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36' ,
+      'Accept':' text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' ,
+      'Accept-Encoding':' gzip, deflate, br' ,
+      'Accept-Language':' zh-CN,zh;q=0.9,en;q=0.8' ,
+      'Cookie':' _ga=GA1.2.256921116.1530079710'
+
+    }
+    headers = { 'User-Agent' : 'Mozilla/5.0' }
+    req = urllib2.Request(url, None, headers)
+    up=urllib2.urlopen(req)#打开目标页面，存入变量up
 
     lines =up.readlines()#从up中读入该HTML文件
 
@@ -36,11 +45,11 @@ def get_free_ss() :
             print line
             print m.group(1)
             sites.append(m.group(1))
-        m = re.match('.*<h4>Port:<span id=".*?">(\d*)', line)
+        m = re.match('.*<h4>Port:<span id=".*?">(\d+)', line)
         if m:
             # print m.group(1)
             ports.append(m.group(1))
-        m = re.match('.*<h4>Password:<span id=".*?">(.*)', line)
+        m = re.match('.*<h4>Password:<span id=".*">(.*)', line)
         if m:
             # print m.group(1)
             password.append(m.group(1))
@@ -60,24 +69,16 @@ def get_free_ss() :
     print qr
     
     i = random.randint(0,len(sites)-1)
-    print i
-    # if not password[i] == '':
-    if i < 9:
-        protocal = 'origin'
-        obfs = 'plain'
-    else: 
-        protocal = 'auth_sha1_v4'
-        obfs = 'tls1.2_ticket_auth'
-
-    return sites[i],ports[i], password[i],method[i],protocal, obfs
-    # else:
-    # 	try:
-    # 		qr_code = subprocess.check_output(['zbarimg', '-q', url+qr[i]])
-    # 	except Exception as e:
-    # 		return sites[i],ports[i], password[i],method[i]
+    if not password[i] == '':
+        return sites[i],ports[i], password[i],method[i]
+    else:
+    	try:
+    		qr_code = subprocess.check_output(['zbarimg', '-q', url+qr[i]])
+    	except Exception as e:
+    		return sites[i],ports[i], password[i],method[i]
         
-    #     # print qr_code
-    #     return get_free_qr(qr_code)
+        # print qr_code
+        return get_free_qr(qr_code)
 
 def get_free_qr(qr) :
 	#QR-Code:ss://cmM0LW1kNToxMTgwOTE1MkAxNTMuOTIuNDMuNjQ6NDQzCg==
@@ -98,7 +99,7 @@ def get_free_qr(qr) :
 	return sites,ports, password,method
 
 # sites, ports, password, method = get_free_qr()
-sites, ports, password ,method, protocal,obfs= get_free_ss()
+sites, ports, password ,method= get_free_ss()
 
 
 # print "shadowsocks/shadowsocks/local.py -s " + sites + " -p " + ports + " -k " + password
@@ -108,13 +109,11 @@ sites, ports, password ,method, protocal,obfs= get_free_ss()
 localbind = '1080'
 
 
-args = ["../shadowsocksr/shadowsocks/local.py", "-s" , sites , 
+args = ["shadowsocksr/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
-                                            "-l", localbind,
-                                            "-O", protocal,
-                                            "-o", obfs]
+                                            "-l", localbind]
 print args
 child2 = subprocess.Popen(args)
 # out = child2.communicate()
@@ -133,18 +132,16 @@ while 1:
         continue
     else:
         child2.kill();
-        sites, ports, password1 ,method , protocal,obfs= get_free_ss()
+        sites, ports, password1 ,method= get_free_ss()
         print sites
         print ports
         print password1
         password = password1
-        args = ["../shadowsocksr/shadowsocks/local.py", "-s" , sites , 
+        args = ["shadowsocksr/shadowsocks/local.py", "-s" , sites , 
                                             "-p" , ports , 
                                             "-k" , password ,
                                             "-m" , method,"-v",
-                                            "-l", localbind,
-                                            "-O", protocal,
-                                            "-o", obfs]
+                                            "-l", localbind]
 
         print args
         child2 = subprocess.Popen(args)

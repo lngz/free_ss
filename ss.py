@@ -15,10 +15,22 @@ def get_free_ss() :
     #url="http://isx.yt/"
 
     url="https://my.ishadowx.net/"
-    opener = urllib2.build_opener()
-    opener.addheaders = [('User-Agent', 'Mozilla/5.0')]
-    up = opener.open(url)
-    #up=urllib2.urlopen(url)#打开目标页面，存入变量up
+    data = {
+
+      'Connection':' keep-alive' ,
+      'Pragma':' no-cache' ,
+      'Cache-Control':' no-cache' ,
+      'Upgrade-Insecure-Requests':' 1' ,
+      'User-Agent':' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36' ,
+      'Accept':' text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' ,
+      'Accept-Encoding':' gzip, deflate, br' ,
+      'Accept-Language':' zh-CN,zh;q=0.9,en;q=0.8' ,
+      'Cookie':' _ga=GA1.2.256921116.1530079710'
+
+    }
+    headers = { 'User-Agent' : 'Mozilla/5.0' }
+    req = urllib2.Request(url, None, headers)
+    up=urllib2.urlopen(req)#打开目标页面，存入变量up
 
     lines =up.readlines()#从up中读入该HTML文件
 
